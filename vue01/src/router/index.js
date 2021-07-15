@@ -5,14 +5,15 @@ import Action from '@/components/action'
 import Today from '@/components/today'
 import Login from '@/views/login.vue'
 Vue.use(Router)
-
 export default new Router({
-  mode: 'history',
+
+  
+  //mode: 'history',
   routes: [
     {
       path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
+      name: 'Login',
+      component: Login
     },
     {
       path: '/action',
@@ -25,9 +26,9 @@ export default new Router({
       component: Today
     },
     {
-      path: '/login',
-      name: 'Login',
-      component: Login
+      path: '/index',
+      name: 'HelloWorld',
+      component: HelloWorld
     }
 
   ]
