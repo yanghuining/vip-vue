@@ -31,19 +31,6 @@ axios.interceptors.request.use(
   }
 );
 
-router.beforeEach((to, from, next) => {
-  if (to.path === '/') {
-    next();
-  } else {
-    let token = localStorage.getItem('token');
- 
-    if (token === null || token === '') {
-      next('/');
-    } else {
-      next();
-    }
-  }
-});
 
 
 /* eslint-disable no-new */
