@@ -57,7 +57,8 @@ export default {
                     url: '/login',
                     data: postData})
           .then(Response => {
-            if (Response.data === 200) {
+            if (Response.data.code==0) {
+              localStorage.setItem('token', Response.data.token),//存token
               this.$router.replace({path: '/index'})
             }else {
               alert("账号密码错误");

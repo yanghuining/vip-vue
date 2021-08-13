@@ -26,6 +26,7 @@ devConfigPromise.then(devConfig => {
   // For more information on Nightwatch's config file, see
   // http://nightwatchjs.org/guide#settings-file
   let opts = process.argv.slice(2)
+  opts=JSON.stringify(opts);
   if (opts.indexOf('--config') === -1) {
     opts = opts.concat(['--config', 'test/e2e/nightwatch.conf.js'])
   }

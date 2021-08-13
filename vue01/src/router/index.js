@@ -5,7 +5,7 @@ import Action from '@/components/action'
 import Today from '@/components/today'
 import Login from '@/views/login.vue'
 Vue.use(Router)
-export default new Router({
+const router =new Router({
 
   
   //mode: 'history',
@@ -32,4 +32,24 @@ export default new Router({
     }
 
   ]
-})
+});
+
+//路由变换前
+router.beforeEach((to, from, next) => {
+  console.log("yi");
+  let token = localStorage.getItem('token');
+ 
+  console.log(token);
+  if (token) {
+    next();
+    
+  } else {
+    if (to.path === '/') {
+      next();
+    } else {
+      next({path:'/'});
+    }
+  }
+});
+
+  export default router;
