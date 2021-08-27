@@ -44,6 +44,7 @@
             <span >
        <!--结果表格 -->
            <!--    （ID是{{ scope.row.userId }}）{{ scope.row.userName }}在{{ scope.row.userDate}}的时候-->
+           操作前：{{ scope.row.oldGrade }}
               <el-tag v-if="scope.row.type ==1">存入</el-tag>
               <el-tag v-if="scope.row.type ==2">取出</el-tag>
               {{ scope.row.actionGrade }}，当前还有{{ scope.row.userGrade }}</span>

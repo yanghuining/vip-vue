@@ -2,22 +2,7 @@
 <template>
   <div>
 
-      <el-form :inline="true" class="demo-form-inline">
-          <el-form-item>
-            <el-input
-              v-model="search"
-              class="search_name"
-              size="mini"
-              placeholder="输入姓名查询">
-            </el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-button
-              type="text"
-              @click="onSearch()"
-              class="el-icon-search">查询
-            </el-button>
-          </el-form-item>
+
           <el-form-item>
             <el-button
               class="el-icon-refresh"
@@ -32,20 +17,9 @@
               @click="dialogVisible = true">添加
             </el-button>
           </el-form-item>
-          <router-link :to ="{path: '/today'}">
-            <el-button   type="primary" size="mini"
-           >今日报告
+          
              
-            </el-button>
-              </router-link>
-              <router-link :to ="{path: '/home'}">
-                <el-button   type="primary" size="mini"
-               >进入管理版
-                 
-                </el-button>
-                  </router-link>
-      </el-form>
-
+        
 
       <!--结果表格 -->
       <el-table
@@ -54,44 +28,25 @@
         border
         style="width: 100%">
         <el-table-column
-          label="编号">
+          label="机器编号">
           <template slot-scope="scope">
-            <span>{{ scope.row.userId }}</span>
+            <span>{{ scope.row.id }}</span>
+          </template>
+        </el-table-column>
+        
+  
+        <el-table-column
+          label="娃娃名称">
+          <template slot-scope="scope">
+            <span>{{ scope.row.name }}</span>
           </template>
         </el-table-column>
         <el-table-column
-          label="日期">
-          <template slot-scope="scope">
-            <i class="el-icon-time hidden-sm-and-down"></i>
-            <span>{{ scope.row.userDate }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column
-          label="姓名">
-          <template slot-scope="scope">
-            <el-popover trigger="hover" placement="right">
-              <p>姓名: {{ scope.row.userName }}</p>
-              <p>住址: {{ scope.row.userAddress }}</p>
-              <p>日期：{{ scope.row.userDate }}</p>
-              <p>积分：{{ scope.row.userGrade }}</p>
-              <div slot="reference" class="name-wrapper">
-                <el-button type="text">{{ scope.row.userName }}</el-button>
-              </div>
-            </el-popover>
-          </template>
-        </el-table-column>
-        <el-table-column
-          label="电话">
-          <template slot-scope="scope">
-            <span>{{ scope.row.userAddress }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column
-          label="积分"
+          label="机器库存"
           width="250"
           class="right-items" style="float: right">
           <template slot-scope="scope">
-            <span>{{ scope.row.userGrade }}</span>
+            <span>{{ scope.row.quantity }}</span>
                 <el-button
               size="mini"
               @click="handleCun(scope.$index, scope.row)">存币
@@ -103,9 +58,26 @@
           
           </template>
         </el-table-column>
+       
+       <el-table-column
+          label="进货价格">
+          <template slot-scope="scope">
+            <span>{{ scope.row.price }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="备注"
+          
+          width="100">
+          <template slot-scope="scope">
+            <span>{{ scope.row.remark }}</span>
+          </template>
+        </el-table-column>
+       
+
         <el-table-column
           label="操作"
-          fixed="right"
+          
           width="300">
           <template slot-scope="scope">
             <router-link :to ="{path: '/action', query: {userId:ruleForm.userId}}">
@@ -563,7 +535,7 @@
                 });
             },*/
             getPages() {
-                this.axios.post('/rows').then(response =>
+                this.axios.post('/inventory/rows').then(response =>
                 {
                     this.total = response.data;
                 }).catch(error =>
@@ -582,7 +554,7 @@
                 this.total = response.data.tableData.length;
                 // console.log(JSON.parse(JSON.stringify(response.data))['tableData'])
             });*/
-            this.axios.post('/page').then(response =>
+            this.axios.post('/inventory/page').then(response =>
             {
                 this.tableData = response.data;
             }).catch(error =>
@@ -590,7 +562,7 @@
                 console.log(error);
             });
 
-            this.axios.post('/rows').then(response =>
+            this.axios.post('/inventory/rows').then(response =>
             {
                 this.total = response.data;
             }).catch(error =>

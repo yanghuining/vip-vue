@@ -4,10 +4,12 @@ import HelloWorld from '@/components/HelloWorld'
 import Action from '@/components/action'
 import Today from '@/components/today'
 import Login from '@/views/login.vue'
+import Home from '@/views/home.vue'
+import OrderInfoManage from '@/views/OrderinfoManage.vue'
+
 Vue.use(Router)
 const router =new Router({
 
-  
   //mode: 'history',
   routes: [
     {
@@ -29,8 +31,21 @@ const router =new Router({
       path: '/index',
       name: 'HelloWorld',
       component: HelloWorld
-    }
-
+    },
+    {
+      path: '/home',
+      name: 'Home',
+      component: Home,
+      children:[
+        
+        {
+          path: '/orderinfomange',
+          name: '订单信息',
+          component: OrderInfoManage,
+        },
+        
+      ]}
+          
   ]
 });
 
