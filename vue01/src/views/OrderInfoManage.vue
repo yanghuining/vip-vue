@@ -3,21 +3,20 @@
   <div>
 
 
-          <el-form-item>
+     
             <el-button
               class="el-icon-refresh"
               type="text"
               @click="refreshData">刷新
             </el-button>
-          </el-form-item>
-          <el-form-item>
+          
+
             <el-button
               class="el-icon-circle-plus-outline"
               type="text"
-              @click="dialogVisible = true">添加
+              @click="dialogVisible = true">添加新机器
             </el-button>
-          </el-form-item>
-          
+      
              
         
 
@@ -30,7 +29,7 @@
         <el-table-column
           label="机器编号">
           <template slot-scope="scope">
-            <span>{{ scope.row.id }}</span>
+            <span>{{ scope.row.newId }}</span>
           </template>
         </el-table-column>
         
@@ -47,22 +46,25 @@
           class="right-items" style="float: right">
           <template slot-scope="scope">
             <span>{{ scope.row.quantity }}</span>
-                <el-button
-              size="mini"
-              @click="handleCun(scope.$index, scope.row)">存币
-            </el-button>
+           
             <el-button
               size="mini"
-              @click="handleQu(scope.$index, scope.row)">取币
+              @click="handleQu(scope.$index, scope.row)">更新今日结余库存
             </el-button>
           
           </template>
         </el-table-column>
        
        <el-table-column
-          label="进货价格">
+          label="进货单价">
           <template slot-scope="scope">
             <span>{{ scope.row.price }}</span>
+          </template>
+        </el-table-column>
+           <el-table-column
+          label="总价值">
+          <template slot-scope="scope">
+            <span>{{ scope.row.price*scope.row.quantity }}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -90,37 +92,32 @@
               size="mini"
               icon="el-icon-edit"
               @click="handleEdit(scope.$index, scope.row)">编辑
-            </el-button>
-            <el-button
-              size="mini"
-              type="danger"
-              icon="el-icon-delete"
-              @click="handleDelete(scope.$index, scope.row)">删除
-            </el-button>
-          
+   
+          </el-button>
           </template>
         </el-table-column>
       </el-table>
 <!-- 添加弹窗 -->
-  <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="70px" class="demo-ruleForm" size="medium">
+  <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="80px" class="demo-ruleForm" size="medium">
         <el-dialog
-          title="添加"
+          title="添加机器"
           :append-to-body='true'
           :visible.sync="dialogVisible"
-          width="80%"
+          width="40%"
           :before-close="handleClose">
           <el-input type="hidden" v-model="ruleForm.userId"/>
-          <el-form-item label="时间" prop="userDate">
-            <el-date-picker type="datetime" placeholder="选择日期" v-model="ruleForm.userDate" style="width: 100%;"></el-date-picker>
+          <el-form-item label="机器编号" prop="userDate">
+            <el-date-picker type="datetime" placeholder="选择日期" v-model="ruleForm.userDate" style="width: 50%;"></el-date-picker>
           </el-form-item>
-          <el-form-item label="姓名" prop="userName">
+          <el-form-item label="娃娃名称" prop="userName"  >
             <el-input v-model="ruleForm.userName"></el-input>
           </el-form-item>
-          <el-form-item label="住址" prop="userAddress">
-            <el-input v-model="ruleForm.userAddress"></el-input>
+          <el-form-item label="机器库存" prop="userAddress" >
+            <el-input v-model="ruleForm.userAddress" ></el-input>
           </el-form-item>
-          <el-form-item label="积分" prop="userGrade">
-          <el-input v-model="ruleForm.userGrade"></el-input>
+          <el-form-item label="进货单价" prop="price">
+          <el-input v-model="ruleForm.price"></el-input>
+          
         </el-form-item>
           <span slot="footer" class="dialog-footer">
             <el-button @click="cancel()" size="medium">取 消</el-button>
@@ -129,7 +126,7 @@
         </el-dialog>
       </el-form>
 <!-- 编辑弹窗 -->
-    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="70px" class="demo-ruleForm" size="medium">
+    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="80px" class="demo-ruleForm" size="medium">
       <el-dialog
         title="编辑"
         :append-to-body='true'
@@ -185,26 +182,26 @@
         </el-dialog>
       </el-form>  
 <!-- 取币弹窗 -->
-</el-form>
+
 <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="70px" class="demo-ruleForm" size="medium">
 <el-dialog
- title="取币"
+ title="更新今日结余库存"
  :append-to-body='true'
  :visible.sync="dialogQu"
  width="30%"
  >
- <el-input type="hidden" v-model="ruleForm.userId"/>
+ <el-input type="hidden" v-model="ruleForm.newId"/>
 
- <el-form-item label="姓名" >   {{ruleForm.userName}}
+ <el-form-item label="娃娃名称" >   {{ruleForm.name}}
 
  </el-form-item>
 
- <el-form-item label="当前">{{ruleForm.userGrade}}
+ <el-form-item label="原库存量">{{ruleForm.quantity}}
 </el-form-item>
- <el-form-item label="取币">
+ <el-form-item label="结余库存">
  <el-input   class="search_name"
-  placeholder="请输入本次取币数量"
- v-model="ruleForm.userCun"
+  placeholder="请输入今日机器内剩余库存"
+ v-model="ruleForm.newquantity"
  ></el-input>
 </el-form-item>
  <span slot="footer" class="dialog-footer">
@@ -245,6 +242,10 @@
                         { min: 2, max: 7, message: '长度在 2 到 7 个字符', trigger: 'blur' }
                     ],
                     userAddress: [
+                        { required: true, message: '请输入住址', trigger: 'blur' },
+                        { min: 5, message: '长度大于 5 个字符', trigger: 'blur' }
+                    ],
+                     price: [
                         { required: true, message: '请输入住址', trigger: 'blur' },
                         { min: 5, message: '长度大于 5 个字符', trigger: 'blur' }
                     ],
@@ -340,7 +341,7 @@
                 });
                 this.axios({
                     method: 'post',
-                    url:'/page',
+                    url:'inventory/page',
                     data:postData
                 }).then(response =>
                 {
@@ -469,15 +470,14 @@
              //取币调接口
              quUser() {
                 let postData = this.qs.stringify({
-                    userId: this.ruleForm.userId,
-                    userName:this.ruleForm.userName,
-                    userGrade:this.ruleForm.userCun,
-                    actionGrade:this.ruleForm.userCun,
-                    type:2
+                    newId: this.ruleForm.newId,
+                  
+                    quantity:this.ruleForm.newquantity,
+                    
                 });
                 this.axios({
                     method: 'post',
-                    url:'/cun',
+                    url:'/inventory/cun',
                     data:postData
                 }).then(response =>
                 {
