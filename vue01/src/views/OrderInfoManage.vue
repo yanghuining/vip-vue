@@ -98,22 +98,22 @@
         </el-table-column>
       </el-table>
 <!-- 添加弹窗 -->
-  <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="80px" class="demo-ruleForm" size="medium">
+  <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="8git init0px" class="demo-ruleForm" size="medium">
         <el-dialog
           title="添加机器"
           :append-to-body='true'
           :visible.sync="dialogVisible"
-          width="40%"
-          :before-close="handleClose">
-          <el-input type="hidden" v-model="ruleForm.userId"/>
-          <el-form-item label="机器编号" prop="userDate">
-            <el-date-picker type="datetime" placeholder="选择日期" v-model="ruleForm.userDate" style="width: 50%;"></el-date-picker>
+          width="30%"
+          >
+          <el-input type="hidden" v-model="ruleForm.newId"/>
+          <el-form-item label="机器编号" prop="newId">
+            <el-input v-model="ruleForm.newId"></el-input>
           </el-form-item>
-          <el-form-item label="娃娃名称" prop="userName"  >
-            <el-input v-model="ruleForm.userName"></el-input>
+          <el-form-item label="娃娃名称" prop="name"  >
+            <el-input v-model="ruleForm.name"></el-input>
           </el-form-item>
-          <el-form-item label="机器库存" prop="userAddress" >
-            <el-input v-model="ruleForm.userAddress" ></el-input>
+          <el-form-item label="机器库存" prop="quantity" >
+            <el-input v-model="ruleForm.quantity" ></el-input>
           </el-form-item>
           <el-form-item label="进货单价" prop="price">
           <el-input v-model="ruleForm.price"></el-input>
@@ -231,23 +231,26 @@
         data() {
             return {
                 ruleForm: {
-                    userId: '',
-                    userName: '',
-                    userDate: '',
-                    userAddress: ''
+                    newId: '',
+                    name: '',
+                    quantity: '',
+                    price: ''
                 },
                 rules: {
-                    userName: [
-                        { required: true, message: '请输入姓名', trigger: 'blur' },
+                   newId: [
+                        { required: true, message: '请输入机器编号', trigger: 'blur' }
+                    ],
+                    name: [
+                        { required: true, message: '请输入娃娃名称', trigger: 'blur' },
                         { min: 2, max: 7, message: '长度在 2 到 7 个字符', trigger: 'blur' }
                     ],
-                    userAddress: [
-                        { required: true, message: '请输入住址', trigger: 'blur' },
-                        { min: 5, message: '长度大于 5 个字符', trigger: 'blur' }
+                    quantity: [
+                        { required: true, message: '请输入数量', trigger: 'blur' },
+                        
                     ],
                      price: [
-                        { required: true, message: '请输入住址', trigger: 'blur' },
-                        { min: 5, message: '长度大于 5 个字符', trigger: 'blur' }
+                        { required: true, message: '请输入价格', trigger: 'blur' },
+                     
                     ],
                 },
                 tableData: [],
@@ -371,18 +374,18 @@
 // 添加用户调接口
             addUser() {
                 let postData = this.qs.stringify({
-                    userDate: this.ruleForm.userDate,
-                    userName: this.ruleForm.userName,
-                    userAddress: this.ruleForm.userAddress,
-                    userGrade:this.ruleForm.userGrade
+                    newId: this.ruleForm.newId,
+                    name: this.ruleForm.name,
+                    quantity: this.ruleForm.quantity,
+                    price:this.ruleForm.price
                 });
                 this.axios({
                     method: 'post',
-                    url:'/insert',
+                    url:'/inventory/insert',
                     data:postData
                 }).then(response =>
                 {
-                    this.axios.post('/page').then(response =>
+                    this.axios.post('/inventory/page').then(response =>
                     {
                         this.tableData = response.data;
                         this.currentPage = 1;
@@ -390,6 +393,7 @@
                             type: 'success',
                             message: '已添加!'
                         });
+                        this.form={brand_right:0}
                     }).catch(error =>
                     {
                         console.log(error);
