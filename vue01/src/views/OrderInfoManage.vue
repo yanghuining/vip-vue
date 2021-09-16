@@ -42,7 +42,7 @@
         </el-table-column>
         <el-table-column
           label="机器库存"
-          width="250"
+          width="200"
           class="right-items" style="float: right">
           <template slot-scope="scope">
             <span>{{ scope.row.quantity }}</span>
@@ -82,6 +82,109 @@
           
           width="300">
           <template slot-scope="scope">
+            <router-link :to ="{path: '/action', query: {userId:ruleForm.userId}}">
+              <el-button   type="primary" size="mini"
+              @click="handleEdit(scope.$index, scope.row)">查看记录
+               
+              </el-button>
+                </router-link>
+            <el-button
+              size="mini"
+              icon="el-icon-edit"
+              @click="handleEdit(scope.$index, scope.row)">编辑
+   
+          </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+<!-- 添加弹窗 -->
+  <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="8git init0px" class="demo-ruleForm" size="medium">
+        <el-dialog
+          title="添加机器"
+          :append-to-body='true'
+          :visible.sync="dialogVisible"
+          width="30%"
+          >
+          <el-input type="hidden" v-model="ruleForm.newId"/>
+          <el-form-item label="机器编号" prop="newId">
+            <el-input v-model="ruleForm.newId"></el-input>
+          </el-form-item>
+          <el-form-item label="娃娃名称" prop="name"  >
+            <el-input v-model="ruleForm.name"></el-input>
+          </el-form-item>
+          <el-form-item label="机器库存" prop="quantity" >
+            <el-input v-model="ruleForm.quantity" ></el-input>
+          </el-form-item>
+          <el-form-item label="进货单价" prop="price">
+          <el-input v-model="ruleForm.price"></el-input>
+          
+        </el-form-item>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="cancel()" size="medium">取 消</el-button>
+            <el-button @click="addUser()" type="primary" size="medium">确 定</el-button>
+          </span>
+        </el-dialog>
+      </el-form>
+<span>未上架库存</span>
+       <!--仓库表格 -->
+      <el-table
+        :data="twoData"
+        highlight-current-row
+        border
+        style="width: 100%">
+        
+  
+        
+        <el-table-column
+          label="娃娃名称">
+          <template slot-scope="scope">
+            <span>{{ scope.row.name }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="库存"
+          
+          class="right-items" style="float: right">
+          <template slot-scope="scope">
+            <span>{{ scope.row.quantity }}</span>
+           
+          
+          </template>
+        </el-table-column>
+       
+       <el-table-column
+          label="进货单价">
+          <template slot-scope="scope">
+            <span>{{ scope.row.price }}</span>
+          </template>
+        </el-table-column>
+           <el-table-column
+          label="总价值">
+          <template slot-scope="scope">
+            <span>{{ scope.row.price*scope.row.quantity }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="备注"
+          
+          width="100">
+          <template slot-scope="scope">
+            <span>{{ scope.row.remark }}</span>
+          </template>
+        </el-table-column>
+       
+
+        <el-table-column
+          label="操作"
+          
+          width="300">
+          <template slot-scope="scope">
+
+
+            <el-button
+              size="mini"
+              @click="handleUp(scope.$index, scope.row)">上架
+            </el-button>
             <router-link :to ="{path: '/action', query: {userId:ruleForm.userId}}">
               <el-button   type="primary" size="mini"
               @click="handleEdit(scope.$index, scope.row)">查看记录
@@ -181,7 +284,7 @@
           </span>
         </el-dialog>
       </el-form>  
-<!-- 取币弹窗 -->
+<!-- 更新库存弹窗 -->
 
 <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="70px" class="demo-ruleForm" size="medium">
 <el-dialog
@@ -210,6 +313,42 @@
  </span>
 </el-dialog>
 </el-form>  
+ <!-- 上架弹窗 -->
+
+<el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="70px" class="demo-ruleForm" size="medium">
+<el-dialog
+ title="上架"
+ :append-to-body='true'
+ :visible.sync="dialogUp"
+ width="30%"
+ >
+ <el-input type="hidden" v-model="ruleForm.newId"/>
+
+ <el-form-item label="娃娃名称" >   {{ruleForm.name}}
+
+ </el-form-item>
+
+ <el-form-item label="原库存量">{{ruleForm.quantity}}
+</el-form-item>
+<el-form-item label="上架机器号">
+ <el-input   
+  placeholder="请输入上架机器号"
+ v-model="ruleForm.toid"
+ ></el-input>
+</el-form-item>
+ <el-form-item label="上架数量">
+ <el-input   class="search_name"
+  placeholder="请输入上架数量"
+ v-model="ruleForm.action"
+ ></el-input>
+</el-form-item>
+ <span slot="footer" class="dialog-footer">
+   <el-button @click="cancel()" size="medium">取 消</el-button>
+   <el-button @click="upInventory()" type="primary" size="medium">确 定</el-button>
+ </span>
+</el-dialog>
+</el-form>  
+
       <br>
       <div class="pages">
         <el-pagination
@@ -259,7 +398,8 @@
                 dialogUpdate: false,
                 dialogCun: false,
                 dialogQu: false,
-                pageSize: 5,
+                dialogUp: false,
+                pageSize: 10,
                 currentPage: 1,
                 total: 0,
                 disablePage: false
@@ -275,6 +415,12 @@
             //取币弹窗方法
           handleQu(index, row) {
                 this.dialogQu = true;
+                this.ruleForm = Object.assign({}, row); //这句是关键！！！
+            },
+
+             //上架弹窗方法
+          handleUp(index, row) {
+                this.dialogUp = true;
                 this.ruleForm = Object.assign({}, row); //这句是关键！！！
             },
           // 编辑弹窗方法
@@ -353,12 +499,24 @@
                 {
                     console.log(error);
                 });
+                 this.axios({
+                    method: 'post',
+                    url:'inventory/base',
+                    data:postData
+                }).then(response =>
+                {
+                    this.twoData = response.data;
+                }).catch(error =>
+                {
+                    console.log(error);
+                });
             },
             cancel() {
                 this.dialogUpdate = false;
                 this.dialogVisible = false;
               this.dialogCun = false;
               this.dialogQu = false;
+              this.dialogUp = false;
                 this.emptyUserData();
             },
             emptyUserData(){
@@ -371,7 +529,7 @@
             },
 
 
-// 添加用户调接口
+// 添加机器调接口
             addUser() {
                 let postData = this.qs.stringify({
                     newId: this.ruleForm.newId,
@@ -389,6 +547,7 @@
                     {
                         this.tableData = response.data;
                         this.currentPage = 1;
+                        this.props.form.resetFields();
                         this.$message({
                             type: 'success',
                             message: '已添加!'
@@ -398,7 +557,9 @@
                     {
                         console.log(error);
                     });
+                    
                     this.getPages();
+                    
                     this.dialogVisible = false
                     console.log(response);
                 }).catch(error =>
@@ -471,11 +632,11 @@
                 });
             },
 
-             //取币调接口
+             //更新库存调接口
              quUser() {
                 let postData = this.qs.stringify({
                     newId: this.ruleForm.newId,
-                  
+                    
                     quantity:this.ruleForm.newquantity,
                     
                 });
@@ -501,7 +662,36 @@
                     console.log(error);
                 });
             },
-
+ //上架调接口
+             upInventory() {
+                let postData = this.qs.stringify({
+                    id:this.ruleForm.id,
+                    toId: this.ruleForm.toid,
+                    actionquantity:this.ruleForm.action,
+                    
+                });
+                this.axios({
+                    method: 'post',
+                    url:'/inventory/cun',
+                    data:postData
+                }).then(response =>
+                {
+                    this.handleCurrentChange();
+                    this.cancel();
+                    this.$message({
+                        type: 'success',
+                        message: '更新成功!'
+                    });
+                    console.log(response);
+                }).catch(error =>
+                {
+                    this.$message({
+                        type: 'success',
+                        message: '更新失败!'
+                    });
+                    console.log(error);
+                });
+            },
             //用名字搜索
             onSearch() {
                 let postData = this.qs.stringify({
@@ -565,7 +755,13 @@
             {
                 console.log(error);
             });
-
+           this.axios.post('/inventory/base').then(response =>
+            {
+                this.twoData = response.data;
+            }).catch(error =>
+            {
+                console.log(error);
+            });
             this.axios.post('/inventory/rows').then(response =>
             {
                 this.total = response.data;
