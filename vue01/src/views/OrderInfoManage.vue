@@ -1,5 +1,6 @@
 <!-- 首页样式 -->
 <template>
+
   <div>
 
 
@@ -19,6 +20,7 @@
       
              
         
+<el-form>{{ valueup }}</el-form>
 
       <!--结果表格 -->
       <el-table
@@ -126,6 +128,12 @@
         </el-dialog>
       </el-form>
 <span>未上架库存</span>
+        <el-button
+              class="el-icon-circle-plus-outline"
+              type="text"
+              @click="dialogVisible = true">添加新库存娃娃
+            </el-button>
+      
        <!--仓库表格 -->
       <el-table
         :data="twoData"
@@ -210,7 +218,10 @@
           >
           <el-input type="hidden" v-model="ruleForm.newId"/>
           <el-form-item label="机器编号" prop="newId">
-            <el-input v-model="ruleForm.newId"></el-input>
+            <el-input v-model="ruleForm.newId"
+            auto-complete="off"
+            placeholder="新机器输入机器号，库存娃娃品类无需输入"
+            ></el-input>
           </el-form-item>
           <el-form-item label="娃娃名称" prop="name"  >
             <el-input v-model="ruleForm.name"></el-input>
@@ -377,7 +388,7 @@
                 },
                 rules: {
                    newId: [
-                        { required: true, message: '请输入机器编号', trigger: 'blur' }
+                        { message: '请输入机器编号', trigger: 'blur' }
                     ],
                     name: [
                         { required: true, message: '请输入娃娃名称', trigger: 'blur' },
@@ -399,7 +410,7 @@
                 dialogCun: false,
                 dialogQu: false,
                 dialogUp: false,
-                pageSize: 10,
+                pageSize: 100,
                 currentPage: 1,
                 total: 0,
                 disablePage: false
@@ -679,8 +690,8 @@
                     this.handleCurrentChange();
                     this.cancel();
                     this.$message({
-                        type: 'success',
-                        message: '更新成功!'
+                        
+                        message: response.data
                     });
                     console.log(response);
                 }).catch(error =>
@@ -769,7 +780,13 @@
             {
                 console.log(error);
             });
-
+        this.axios.post('/inventory/value').then(response =>
+            {
+                this.valueup = response.data;
+            }).catch(error =>
+            {
+                console.log(error);
+            });
         },
         jump() {
               this.$router.push({path:'/components/action'});

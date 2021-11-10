@@ -21,9 +21,9 @@
         <!-- unique-opened只展开一个 -->
         <!-- router开启路由模式 -->
         <el-menu :unique-opened="true" :router="true" class="menu"
-          background-color=" #3A3A3A"
+          background-color="#0664a3"
           text-color="#fff"
-          active-text-color="#ffd04b"
+          active-text-color="rgba(0,0,0,0.1)"
           >
           
            <el-submenu index="1">
@@ -155,25 +155,28 @@ export default {
   font-size: 15px;
 }
 .header {
-  background: #212121;
+  background-color:#0664a3;
   color: #fff;
 }
 .aside {
-  background: #3a3a3a;
+  background-color: #0664a3!important;
   color: #fff;
+  
   /* height: 100%; */
 }
 .menu {
-  background: none;
+  background-color: none;
   color: #fff;
+  
 }
 .main {
   /* height: 100%; */
-  color: #212121;
+  color: #0664a3;
+ 
 }
 .headerlogo {
-  line-height: 60px;
-  margin-top: 10px;
+  line-height: 200px;
+  margin-top: 100px;
 }
 .rightsection {
   line-height: 60px;
