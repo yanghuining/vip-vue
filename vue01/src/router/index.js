@@ -6,6 +6,7 @@ import Today from '@/components/today'
 import Login from '@/views/login.vue'
 import Home from '@/views/home.vue'
 import OrderInfoManage from '@/views/OrderinfoManage.vue'
+import Inventorylast from '@/views/inventorylast.vue'
 
 Vue.use(Router)
 const router =new Router({
@@ -40,8 +41,13 @@ const router =new Router({
         
         {
           path: '/orderinfomange',
-          name: '订单信息',
+          name: '库存信息',
           component: OrderInfoManage,
+        },
+        {
+          path: '/inventorylast',
+          name: '库存变动记录',
+          component: Inventorylast,
         },
         
       ]}

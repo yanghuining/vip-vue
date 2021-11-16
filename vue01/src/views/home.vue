@@ -33,6 +33,7 @@
             </template>
             <!-- index 表示跳转路径 后面需要改成路径-->
             <el-menu-item index="/orderinfomange">库存</el-menu-item>
+            <el-menu-item index="/inventorylast">库存记录</el-menu-item>
           </el-submenu>
           <el-submenu index="2">
             <template slot="title">

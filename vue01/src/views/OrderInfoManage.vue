@@ -190,15 +190,13 @@
 
 
             <el-button
-              size="mini"
+             type="primary" size="mini"
               @click="handleUp(scope.$index, scope.row)">上架
             </el-button>
-            <router-link :to ="{path: '/action', query: {userId:ruleForm.userId}}">
-              <el-button   type="primary" size="mini"
-              @click="handleEdit(scope.$index, scope.row)">查看记录
-               
-              </el-button>
-                </router-link>
+                <el-button
+             type="primary" size="mini"
+              @click="handleBase(scope.$index, scope.row)">补充
+  </el-button>
             <el-button
               size="mini"
               icon="el-icon-edit"
@@ -265,37 +263,9 @@
             <el-button @click="updateUser()" type="primary" size="medium">确 定</el-button>
           </span>
       </el-dialog>
-
-      <!-- 存币弹窗 -->
-    </el-form>
-         <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="70px" class="demo-ruleForm" size="medium">
-        <el-dialog
-          title="存币"
-          :append-to-body='true'
-          :visible.sync="dialogCun"
-          width="30%">
-          <el-input type="hidden" v-model="ruleForm.userId"/>
-         
-          <el-form-item label="姓名" >   {{ruleForm.userName}}
-
-          </el-form-item>
-
-          <el-form-item label="当前">{{ruleForm.userGrade}}
-  
-          </el-form-item>
-          <el-form-item label="存币">
-          <el-input   class="search_name"
-           placeholder="请输入本次存币数量"
-          v-model="ruleForm.userCun"
-          ></el-input>
-        </el-form-item>
-          <span slot="footer" class="dialog-footer">
-            <el-button @click="cancel()" size="medium">取 消</el-button>
-            <el-button @click="cunUser()" type="primary" size="medium">确 定</el-button>
-          </span>
-        </el-dialog>
-      </el-form>  
-<!-- 更新库存弹窗 -->
+</el-form> 
+    
+<!-- 机器更新库存弹窗 -->
 
 <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="70px" class="demo-ruleForm" size="medium">
 <el-dialog
@@ -321,6 +291,35 @@
  <span slot="footer" class="dialog-footer">
    <el-button @click="cancel()" size="medium">取 消</el-button>
    <el-button @click="quUser()" type="primary" size="medium">确 定</el-button>
+ </span>
+</el-dialog>
+</el-form>  
+<!-- 库存补充弹窗 -->
+
+<el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="70px" class="demo-ruleForm" size="medium">
+<el-dialog
+ title="库存补充"
+ :append-to-body='true'
+ :visible.sync="dialogBase"
+ width="30%"
+ >
+ 
+
+ <el-form-item label="娃娃名称" >   {{ruleForm.name}}
+
+ </el-form-item>
+
+ <el-form-item label="原库存量">{{ruleForm.quantity}}
+</el-form-item>
+ <el-form-item label="补充娃娃">
+ <el-input   class="search_name"
+  placeholder="请输入要补充的娃娃数量"
+ v-model="ruleForm.action"
+ ></el-input>
+</el-form-item>
+ <span slot="footer" class="dialog-footer">
+   <el-button @click="cancel()" size="medium">取 消</el-button>
+   <el-button @click="basecun()" type="primary" size="medium">确 定</el-button>
  </span>
 </el-dialog>
 </el-form>  
@@ -404,12 +403,14 @@
                     ],
                 },
                 tableData: [],
+                twoData: [],
                 search: '',
                 dialogVisible: false,
                 dialogUpdate: false,
                 dialogCun: false,
                 dialogQu: false,
                 dialogUp: false,
+                dialogBase: false,
                 pageSize: 100,
                 currentPage: 1,
                 total: 0,
@@ -417,13 +418,9 @@
             }
         },
         methods: {
-//存币弹窗方法
-          handleCun(index, row) {
-                this.dialogCun = true;
-                this.ruleForm = Object.assign({}, row); //这句是关键！！！
-            },
 
-            //取币弹窗方法
+
+            //机器更新库存弹窗方法
           handleQu(index, row) {
                 this.dialogQu = true;
                 this.ruleForm = Object.assign({}, row); //这句是关键！！！
@@ -432,6 +429,12 @@
              //上架弹窗方法
           handleUp(index, row) {
                 this.dialogUp = true;
+                this.ruleForm = Object.assign({}, row); //这句是关键！！！
+            },
+
+             //补充娃娃弹窗方法
+          handleBase(index, row) {
+                this.dialogBase = true;
                 this.ruleForm = Object.assign({}, row); //这句是关键！！！
             },
           // 编辑弹窗方法
@@ -528,6 +531,7 @@
               this.dialogCun = false;
               this.dialogQu = false;
               this.dialogUp = false;
+              this.dialogBase = false;
                 this.emptyUserData();
             },
             emptyUserData(){
@@ -611,18 +615,18 @@
                     console.log(error);
                 });
             },
-            //存币调接口
-              cunUser() {
+            
+             //机器更新库存调接口
+             quUser() {
                 let postData = this.qs.stringify({
-                    userId: this.ruleForm.userId,
-                    userName:this.ruleForm.userName,
-                    actionGrade:this.ruleForm.userCun,
-                    userGrade:this.ruleForm.userCun,
-                    type:1
+                    newId: this.ruleForm.newId,
+                    name:this.ruleForm.name,
+                    quantity:this.ruleForm.newquantity,
+                    
                 });
                 this.axios({
                     method: 'post',
-                    url:'/cun',
+                    url:'/inventory/cun',
                     data:postData
                 }).then(response =>
                 {
@@ -643,12 +647,12 @@
                 });
             },
 
-             //更新库存调接口
-             quUser() {
+             //库存补充调接口
+             basecun() {
                 let postData = this.qs.stringify({
-                    newId: this.ruleForm.newId,
-                    
-                    quantity:this.ruleForm.newquantity,
+                    id: this.ruleForm.id,
+                    name:this.ruleForm.name,
+                    actionquantity:this.ruleForm.action,
                     
                 });
                 this.axios({
@@ -679,6 +683,7 @@
                     id:this.ruleForm.id,
                     toId: this.ruleForm.toid,
                     actionquantity:this.ruleForm.action,
+                    name:this.ruleForm.name,
                     
                 });
                 this.axios({
@@ -703,42 +708,8 @@
                     console.log(error);
                 });
             },
-            //用名字搜索
-            onSearch() {
-                let postData = this.qs.stringify({
-                    userName: this.search
-                });
-                this.axios({
-                    method: 'post',
-                    url: '/ListByName',
-                    data: postData
-                }).then(response =>
-                {
-                    this.tableData = response.data;
-                    this.disablePage = true;
-                }).catch(error =>
-                {
-                    console.log(error);
-                });
-            },
-           /* memory() {
-                let postData = this.qs.stringify({
-                   // userName: this.search
-                   userId:76
-                });
-                this.axios({
-                    method: 'post',
-                    url: '/memory',
-                    data: postData
-                }).then(response =>
-                {
-                    this.tableData = response.data;
-                    this.disablePage = true;
-                }).catch(error =>
-                {
-                    console.log(error);
-                });
-            },*/
+        
+      
             getPages() {
                 this.axios.post('/inventory/rows').then(response =>
                 {
