@@ -1,5 +1,7 @@
 <template>
   <div>
+    <el-form>当前日期支出娃娃数量{{ todayquantity }}个，共支出娃娃成本{{ todaypay }}元</el-form>
+
     <el-input
               v-model="search"
               class="search_name"
@@ -65,6 +67,8 @@
             return {
                 search: '',
                 tableData: [],
+                todayquantity: '',
+                todaypay: '',
                 
             }
         },
@@ -86,6 +90,19 @@
                 {
                     console.log(error);
                 });
+                this.axios({
+                    method: 'post',
+                    url:'/money/today',
+                    data: postData
+                  
+                }).then(response =>
+            {
+                this.todayquantity = response.data.todayquantity;
+                this.todaypay =response.data.todaypay;
+            }).catch(error =>
+            {
+                console.log(error);
+            });
             },
 
             getPages() {
@@ -112,17 +129,11 @@
       }},
        
         created() {
-            /*this.axios.get('static/user.json').then(response =>
-            {
-                this.tableData = response.data.tableData;
-                this.total = response.data.tableData.length;
-                // console.log(JSON.parse(JSON.stringify(response.data))['tableData'])
-            });*/
-         
             let postData = this.qs.stringify({
                    // userName: this.search
                    
-                   userId:this.$route.query.userId
+                   userId:this.$route.query.userId,
+                   
                 });
                 this.axios({
                     method: 'get',
@@ -135,6 +146,19 @@
             {
                 console.log(error);
             });
+                    this.axios({
+                    method: 'post',
+                    url:'/money/today',
+                  
+                }).then(response =>
+            {
+                this.todayquantity = response.data.todayquantity;
+                this.todaypay =response.data.todaypay;
+            }).catch(error =>
+            {
+                console.log(error);
+            });
+       
 
             this.axios.post('/rows').then(response =>
             {
@@ -143,7 +167,8 @@
             {
                 console.log(error);
             });
-
+       
+        
         },
     
     }

@@ -19,7 +19,7 @@
             </el-button>
       
              
-        
+   <el-form>{{ taodayquantity }}</el-form>      
 <el-form>{{ valueup }}</el-form>
 
       <!--结果表格 -->
@@ -758,7 +758,25 @@
             {
                 console.log(error);
             });
+
+          let postData = this.qs.stringify({
+                    date: "2022-05-12",
+                   
+                });
+                this.axios({
+                    method: 'post',
+                    url:'/money/today',
+                    data:postData
+                }).then(response =>
+            {
+                this.taodayquantity = response.data.taodayquantity;
+                this.todaypay =response.data.todaypay;
+            }).catch(error =>
+            {
+                console.log(error);
+            });
         },
+        
         jump() {
               this.$router.push({path:'/components/action'});
             }

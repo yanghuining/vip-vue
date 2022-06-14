@@ -21,9 +21,8 @@
         <!-- unique-opened只展开一个 -->
         <!-- router开启路由模式 -->
         <el-menu :unique-opened="true" :router="true" class="menu"
-          background-color="#0664a3"
-          text-color="#fff"
-          active-text-color="rgba(0,0,0,0.1)"
+         
+          active-text-color="#409EFF"
           >
           
            <el-submenu index="1">
@@ -59,7 +58,7 @@
         </el-menu>
       </el-aside>
 
-      <el-main class="main">
+      <el-main class="main" style="padding: 0 10px!important;background-color:#f0f2f5">
         <!-- <manage-sys-home :style="style"></manage-sys-home> -->
         <!--首页信息 -->
         <router-view></router-view>
@@ -152,15 +151,18 @@ export default {
 </script>
 <style scoped>
 .container {
-  height: 100vh;
+  
   font-size: 15px;
 }
 .header {
-  background-color:#0664a3;
+  background-color:#061723;
   color: #fff;
+  height: 50px;
 }
 .aside {
-  background-color: #0664a3!important;
+    background-color: #fff;
+     
+  /*background-color: #0664a3!important;
   color: #fff;
   
   /* height: 100%; */
@@ -176,8 +178,8 @@ export default {
  
 }
 .headerlogo {
-  line-height: 200px;
-  margin-top: 100px;
+  line-height: 100px;
+  margin-top: 1px;
 }
 .rightsection {
   line-height: 60px;
