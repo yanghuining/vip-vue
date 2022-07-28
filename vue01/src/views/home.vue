@@ -37,9 +37,9 @@
           <el-submenu index="2">
             <template slot="title">
               <i class="el-icon-location"></i>
-              <span>岗位信息管理</span>
+              <span>小程序管理系统</span>
             </template>
-            <el-menu-item index="/orderinfomange">岗位信息</el-menu-item>
+            <el-menu-item index="/gamebalance">成本支出</el-menu-item>
           </el-submenu>
           <el-submenu index="3">
             <template slot="title">

@@ -7,6 +7,7 @@ import Login from '@/views/login.vue'
 import Home from '@/views/home.vue'
 import OrderInfoManage from '@/views/OrderinfoManage.vue'
 import Inventorylast from '@/views/inventorylast.vue'
+import Gamebalance from '@/views/gamebalance.vue'
 
 Vue.use(Router)
 const router =new Router({
@@ -48,6 +49,11 @@ const router =new Router({
           path: '/inventorylast',
           name: '库存变动记录',
           component: Inventorylast,
+        },
+        {
+          path: '/gamebalance',
+          name: '成本支出',
+          component: Gamebalance,
         },
         
       ]}
