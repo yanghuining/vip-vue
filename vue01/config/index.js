@@ -11,6 +11,8 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
+ 
+
       '/': {
         target:'http://127.0.0.1:8088', // 你请求的第三方接口
         changeOrigin:true, // 在本地会创建一个虚拟服务端，然后发送请求的数据，并同时接收请求的数据，这样服务端和服务端进行数据的交互就不会有跨域问题
@@ -23,7 +25,8 @@ module.exports = {
     // Various Dev Server settings
     host: '127.0.0.1', // can be overwritten by process.env.HOST
     port: 9091, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
-    autoOpenBrowser: false,
+
+   autoOpenBrowser: false,
     errorOverlay: true,
     notifyOnErrors: true,
     poll: false, // https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-
@@ -44,6 +47,7 @@ module.exports = {
     cssSourceMap: true
   },
 
+  
   build: {
     // Template for index.html
     index: path.resolve(__dirname, '../dist/index.html'),

@@ -44,9 +44,9 @@
           <el-submenu index="3">
             <template slot="title">
               <i class="el-icon-location"></i>
-              <span>订单信息管理</span>
+              <span>新东方数据构造</span>
             </template>
-            <el-menu-item index="/orderinfomange">订单信息</el-menu-item>
+            <el-menu-item index="/xdftest">老带新</el-menu-item>
           </el-submenu>
           <el-submenu index="3">
             <template slot="title">

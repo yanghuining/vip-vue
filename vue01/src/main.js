@@ -31,7 +31,9 @@ axios.interceptors.request.use(
   }
 );
 
-
+axios.defaults.withCredentials = true // 允许携带cookie
+axios.defaults.crossDomain = true // 跨域访问需要打开这个开关
+axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded' // 设置post请求的默认Content-Type
 
 /* eslint-disable no-new */
 new Vue({

@@ -8,6 +8,7 @@ import Home from '@/views/home.vue'
 import OrderInfoManage from '@/views/OrderinfoManage.vue'
 import Inventorylast from '@/views/inventorylast.vue'
 import Gamebalance from '@/views/gamebalance.vue'
+import Xdftest from '@/views/xdftest.vue'
 
 Vue.use(Router)
 const router =new Router({
@@ -54,6 +55,11 @@ const router =new Router({
           path: '/gamebalance',
           name: '成本支出',
           component: Gamebalance,
+        },
+        {
+          path: '/xdftest',
+          name: '数据构造',
+          component: Xdftest,
         },
         
       ]}
